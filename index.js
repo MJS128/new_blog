@@ -1,20 +1,27 @@
+
 const express = require('express')
 const app = express()
 const port = 3000
 
-const boardRouter = require('./routes/board');
+const connect = require("./schemas");
+connect();
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
-app.use((req, res, next) => {
-    console.log(req);
+const boradRouter = require("./routers/borad");
+app.use("/api", [boradRouter]);
+
+app.use((req,res,next)=>{
+    console.log(req)
     next();
 });
 
-app.use('/board', boardRouter);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+// app.use('/board', boardRouter);
 
 app.use((req, res, next) => {
     console.log(req);
@@ -35,6 +42,10 @@ app.get('/borad', (req, res) => {
     res.render('borad')
 })
 
+
+app.get('/borad/write', (req, res) => {
+    res.render('write')
+})
 
 app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`)
