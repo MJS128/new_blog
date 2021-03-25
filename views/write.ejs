@@ -30,7 +30,34 @@
     </div>
   </nav>
 </head>
+<script>
+function make_board(){
+  alert('안녕!')
+  let author = $("#author").val()
+  let pw = $("#pw").val()
+  let title = $("#title").val()
+  let content = $("#content").val()
+  $.ajax({
+        type:"POST",
+        url:"/api/borad",
+        data:{
+          'author' : author,
+          'pw' : pw,
+          'title' : title,
+          'content' : content
+        },
+        success:function(response){
+          if(response['result'] == "success"){
+            alert("성공적으로 글이 저장됐습니다.")
+            window.location.href ="/borad"
+          }
+        }
+  })
+}
 
+
+
+</script>
 
 
 
@@ -39,15 +66,16 @@
 
 <body>
   <div class="input">
-    id: <input type="text" name="address" size="20"><br>
+    author <input type="text" id="author"  size="20"><br>
     <p></p>
-    비밀번호 : <input type="text" name="zipcode" maxlength="5" size="5"><br>
+    pw: <input type="text" id="pw" maxlength="5" size="5"><br>
     <p></p>
+    title <input type="text" id="title" size="20"><br>
     <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">내용을 입력하세요</label><br>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+      <label for="exampleFormControlTextarea1" class="form-label">content</label><br>
+      <textarea class="form-control" id="content" rows="1"></textarea>
     </div>
-    <button type="button" class="btn btn-outline-success">save</button>
+    <button type="button" class="btn btn-outline-success" onclick="make_board()">save</button> 
   </div>
 </body>
 </html>
