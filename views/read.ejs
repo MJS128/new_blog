@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="../borad">borad</a>
+          <a class="nav-link" href="/fun">내 취미</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</head>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const boradId = urlParams.get("boradId");
+
+    $(document).ready(function () {
+      show_detail();
+    });
+
+    function show_detail() {
+              $.ajax({
+              type: "GET",
+              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              data: {},
+              success: function(response) {
+              let borad = response['borad_detail'];
+              let author = borad['author']
+              let title  = borad['title']
+              let content = borad['content']
+              
+              let temphtml = `<h1>${author}</h1>
+                        <h1>${title}</h1><br>
+                        <p>${content}</p>`
+
+                $('#borad_show').append(temphtml)
+              }
+            });
+    }
+
+    function retouchtitle() {
+          let pw = $("#pw").val()
+          alert(pw)
+            $.ajax({
+              type: "PATCH",
+              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              data: {
+                  'pw' : pw
+              },
+              success: function(response) {
+                if (response["result"] == "success") {
+                  alert('확인완료')
+                  window.location.href ="/borad/write"
+                } else {
+                  alert('틀렸어용ㅠㅠ')
+                }
+              }
+            });
+    }
+
+    function removetitle() {
+          let pw = $("#pw").val()
+          alert(pw)
+            $.ajax({
+              type: "DELETE",
+              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              data: {
+                  'pw' : pw
+              },
+              success: function(response) {
+                if (response["result"] == "success") {
+                  alert('삭제가 완료되었습니다!')
+                  window.location.href ="/borad"
+                } else {
+                  alert('틀렸어용ㅠㅠ')
+                }
+              }
+            });
+    }
+
+
+
+
+
+</script>
+<body>
+  <div id ="borad_show">
+    비밀번호 <input type='text' id='pw' placeholder="비밀번호를 입력해주세용" style="width:200px;">
+  </div>
+    <article class="form-control" id="bookReview" cols="30"
+    rows="30"></article>
+    <button onclick="retouchtitle()">수정</button>
+    <button onclick="removetitle()">삭제</button>
+    </body>
+</html>

@@ -6,7 +6,8 @@ const connect = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        
     })
     .catch(err => console.log(err));
 };

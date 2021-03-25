@@ -32,27 +32,51 @@
     </div>
   </nav>
   <script>
-   
-  
+    $(document).ready(function(){
+            get_posts();
+    });
 
+    function get_posts(){
+      $.ajax({
+        type:"GET",
+        url:"/api/borad",
+        data:{},
+        success:function(response){
+          let board = response['Borad']
+          for(let i  =0 ; i < board.length; i++){
+            let tempHtml = `<tr onClick="location.href='/borad/read?boradId=${board[i]["id"]}'" >
+                              <td>${board[i]['author']}</td>
+                              <td>${board[i]['title']}</td>
+                              <td>${board[i]['create_date']}</td>              
+                          </tr>
+                          `
+          $("#board").append(tempHtml)
+        }}
+      }) 
+    };
   </script>
 </head>
 <title> 게시판 </title>
 <body>
   <h1> borad </h1>
   <div class="button">
-    <a button type="button" class="btn_btn-primary" href="/borad/write">new</button>
-  </div>
+    <a button type="button"  href='/borad/write'>글 작성</button></a>
+  </div><br>
   <br>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">number</th>
-        <th scope="col">title</th>
-        <th scope="col">user</th>
-        <th scope="col">date</th>
+        <th scope="col" size="50">작성자</th>
+        <th scope="col">제목</th>
+        <th scope="col">작성일</th>
       </tr>
     </thead>
+    <tbody id ="board">
+     
+    </tbody>
   </table>
+  <div id="titleList" >
+
+  </div>
 </body>
 </html>

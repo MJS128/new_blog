@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const boradSchema = new Schema({
     id: {
-        type: String,
+        type: Number,
         required: true,
         unique: true
     },
@@ -16,14 +16,19 @@ const boradSchema = new Schema({
         type: String,
         required: true,
     },
-    index: {
+    content: {
         type: String,
         required: true,
     },
-    number: {
-        type: String,
-        required: true
-    },    
+    author:{
+        type:String,
+        required:true
+    },
+    create_date :{
+        type : Date,
+        default : Date.now
+    }
 });
+
 
 module.exports = mongoose.model("borad", boradSchema);
