@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+<script>
+    function sign_up() {
+        
+        alert('안녕!')
+        let nickname = $("#nickname").val();
+        let email = $("#Email").val();
+        let password1 = $("#Password1").val();
+        let password2 = $("#Password2").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/api/user",
+            data: {
+                'email': email,
+                'password': password1,
+                'nickname': nickname,
+                'confirmPassword' : password2,
+            },
+            success: function (response) {
+                   alert("회원가입 완료")
+                    window.location.href = "/board"
+                },
+                error: function (error) {
+            customAlert(error.responseJSON.errorMessage);
+          },
+        });
+      }
+
+</script>
+<title>회원가입</title>
+
+<body>
+    <div class="input">
+        nickname <input type="text" id="nickname" size="20" placeholder="닉네임"><br>
+        <p></p>
+        E_mail <input type="" id="email" id="email"  size="20   placeholder="email@email.com"><br>
+        <p></p>
+        password <input type="password" id="password1" size="20" placeholder="영문과 숫자로 6자리 이상"><br>
+        password 확인 <input type="password" id="confirmPassword2" size="20" placeholder="비밀번호 재입력"><br></br>
+    </div>
+    <button onclick="sign_up()">회원가입</button> <button hrf="/index">취소</button>
+</body>
+
+</html>

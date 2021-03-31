@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="../board">board</a>
+          <a class="nav-link" href="/fun">내 취미</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</head>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const boardId = urlParams.get("boardId");
+    let _id;
+
+    alert(boardId)
+    $(document).ready(function () {listing();  }); 
+
+    function listing() {
+            $.ajax({
+                type: "GET",
+                url: `/api/board/${boardId}`,
+                data: {},
+                success: function (response) {
+                 
+                    let board = response['board_detail'];
+                    _id = board['_id'];
+                    $("#title").val(board['title'])
+                    $("#pw").val(board['pw'])
+                    $("#author").val(board['author'])
+                    $("#content").val(board['content']) // 내가 username이라는 Id값을 가진 input 박스에 value 안의 값을 board['username']으로 한다는 뜻.
+                }
+            })
+        };
+
+        function remake_board(){
+  
+  let author = $("#author").val();
+  let pw = $("#pw").val();
+  let title = $("#title").val();
+  let content = $("#content").val();
+  
+  $.ajax({
+        type:"POST",
+        url:`/api/board/edit/${_id}`,
+        data:{
+          'author' : author,
+          'pw' : pw,
+          'title' : title,
+          'content' : content
+        },
+        success:function(response){
+          alert(JSON.stringify(response))
+          if(response['result'] == "success"){
+            alert("성공적으로 글이 수정됐습니다.")
+            window.location.href ="/board"
+          }
+        }
+  })
+}
+  </script>
+
+
+
+</head>
+<title> 수정 </title>
+
+<body>
+  <div class="input">
+    author <input type="text" id="author"  size="20"><br>
+    <p></p>
+    pw: <input type="text" id="pw" maxlength="5" size="5"><br>
+    <p></p>
+    title <input type="text" id="title" size="20"><br>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">content</label><br>
+      <textarea class="form-control" id="content" rows="1"></textarea>
+    </div>
+    <button type="button" class="btn btn-outline-success" onclick="remake_board()">save</button> 
+  </div>
+</body>
+</html>

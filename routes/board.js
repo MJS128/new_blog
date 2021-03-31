@@ -9,6 +9,7 @@ router.get('/read', function(req, res, next) {
   res.send('Router 게시판 읽기')
 });
 
-router.get('/check', function(req, res, next) {
+router.get('/edit', function(req, res, next) {
   res.send('확인')
 });
+

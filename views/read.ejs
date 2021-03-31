@@ -21,10 +21,10 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-          <a class="nav-link" href="../borad">borad</a>
-          <a class="nav-link" href="/fun">내 취미</a>
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="../board">board</a>
+          <a class="nav-link" href="/index/user">회원가입</a>
+          <a class="nav-link" href="/index/login">로그인</a>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
 <script>
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const boradId = urlParams.get("boradId");
+    const boardId = urlParams.get("boardId");
 
     $(document).ready(function () {
       show_detail();
@@ -42,56 +42,57 @@
     function show_detail() {
               $.ajax({
               type: "GET",
-              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              url: `/api/board/${boardId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
               data: {},
               success: function(response) {
-              let borad = response['borad_detail'];
-              let author = borad['author']
-              let title  = borad['title']
-              let content = borad['content']
+              let board = response['board_detail'];
+              let author = board['author']
+              let title  = board['title']
+              let content = board['content']
               
               let temphtml = `<h1>${author}</h1>
                         <h1>${title}</h1><br>
                         <p>${content}</p>`
 
-                $('#borad_show').append(temphtml)
+                $('#board_show').append(temphtml)
               }
             });
     }
 
-    function retouchtitle() {
-          let pw = $("#pw").val()
-          alert(pw)
+    function REPOST() {
+      let pw = $("#pw").val()
+          alert(boardId)
             $.ajax({
-              type: "PATCH",
-              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              type: "PUT",
+              url: `/api/board/${boardId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
               data: {
-                  'pw' : pw
+                  'pw' : pw,
               },
               success: function(response) {
                 if (response["result"] == "success") {
                   alert('확인완료')
-                  window.location.href ="/borad/write"
+                  window.location.href =`/board/edit?boardId=${boardId}`
                 } else {
                   alert('틀렸어용ㅠㅠ')
                 }
               }
             });
     }
+          
 
-    function removetitle() {
+    function DELETE() {
           let pw = $("#pw").val()
           alert(pw)
             $.ajax({
               type: "DELETE",
-              url: `/api/borad/${boradId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              url: `/api/board/${boardId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
               data: {
-                  'pw' : pw
+                  'pw' : pw,
               },
               success: function(response) {
                 if (response["result"] == "success") {
                   alert('삭제가 완료되었습니다!')
-                  window.location.href ="/borad"
+                  window.location.href ="/board"
                 } else {
                   alert('틀렸어용ㅠㅠ')
                 }
@@ -105,12 +106,12 @@
 
 </script>
 <body>
-  <div id ="borad_show">
+  <div id ="board_show">
     비밀번호 <input type='text' id='pw' placeholder="비밀번호를 입력해주세용" style="width:200px;">
   </div>
-    <article class="form-control" id="bookReview" cols="30"
-    rows="30"></article>
-    <button onclick="retouchtitle()">수정</button>
-    <button onclick="removetitle()">삭제</button>
+    <article class="form-control" id="bookReview" cols="30"></article>
+    
+    <button onclick="REPOST()">수정</button>
+    <button onclick="DELETE()">삭제</button>
     </body>
 </html>

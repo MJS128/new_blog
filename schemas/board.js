@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
-const boradSchema = new Schema({
+const BoardSchema = new Schema({
     id: {
         type: Number,
         required: true,
@@ -9,20 +9,15 @@ const boradSchema = new Schema({
     },
     pw: {
         type: String,
-        required: true,
-        unique: true
     },
     title: {
         type: String,
-        required: true,
     },
     content: {
         type: String,
-        required: true,
     },
     author:{
         type:String,
-        required:true
     },
     create_date :{
         type : Date,
@@ -31,4 +26,4 @@ const boradSchema = new Schema({
 });
 
 
-module.exports = mongoose.model("borad", boradSchema);
+module.exports = mongoose.model("board", BoardSchema);

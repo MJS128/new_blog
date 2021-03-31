@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<script>
+        function login() {
+      let pw = $("#pw").val()
+          alert(짠)
+            $.ajax({
+              type: "PUT",
+              url: "/api/user",      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
+              data: {
+                  'email' : email,
+                  'pssword' : pssword,
+              },
+              success: function(response) {
+                if (response["result"] == "success") {
+                  alert('확인완료')
+                  window.location.href ="/board"
+                } else {
+                  alert('틀렸어용ㅠㅠ')
+                }
+              }
+            });
+    }
+</script>
+<body>
+<div class="input">
+    email <input type="text" id="author"  size="20"><br>
+    <p></p>
+    password: <input type="text" id="pw" maxlength="5" size="5"><br>
+    <p></p>
+    <button onclick="login()">로그인</button>
+    
+
+</body>
+</html>

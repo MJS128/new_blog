@@ -23,8 +23,9 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
-          <a class="nav-link" href="../borad">borad</a>
-          <a class="nav-link" href="/fun">내 취미</a>
+          <a class="nav-link" href="../board">board</a>
+          <a class="nav-link" href="/index/user">회원가입</a>
+          <a class="nav-link" href="/index/login">로그인</a>  
         </div>
       </div>
     </div>
@@ -33,13 +34,14 @@
 <script>
 function make_board(){
   alert('안녕!')
-  let author = $("#author").val()
-  let pw = $("#pw").val()
-  let title = $("#title").val()
-  let content = $("#content").val()
+  let author = $("#author").val();
+  let pw = $("#pw").val();
+  let title = $("#title").val();
+  let content = $("#content").val();
+  
   $.ajax({
         type:"POST",
-        url:"/api/borad",
+        url:"/api/board",
         data:{
           'author' : author,
           'pw' : pw,
@@ -49,7 +51,7 @@ function make_board(){
         success:function(response){
           if(response['result'] == "success"){
             alert("성공적으로 글이 저장됐습니다.")
-            window.location.href ="/borad"
+            window.location.href ="/board"
           }
         }
   })
