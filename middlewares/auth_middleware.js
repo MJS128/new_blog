@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+
 //미들웨어 기본 틀
 module.exports = (req, res, next) => {
     const {authorization} = req.headers;
@@ -13,7 +14,7 @@ module.exports = (req, res, next) => {
     }
     try { 
         const {userId} = jwt.verify(tokenValue, "my-secret-key");  //jwt토큰이 유효하면 
-        User.findById(userId).exec().then((user) => { //db에서 정보를 불러와서 
+        User.findByPk(userId).then((user) => { //db에서 정보를 불러와서 
             res.locals.user = user; //여기에 넘김(?)
             next(); //호출
         }); 

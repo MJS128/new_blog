@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="../board">board</a>
+          <a class="nav-link" href="/index/user">회원가입</a>
+          <a class="nav-link" href="/index/login">로그인</a>  
+        </div>
+      </div>
+    </div>
+  </nav>
 </head>
+
 <script>
+    
     function sign_up() {
-        
-        alert('안녕!')
         let nickname = $("#nickname").val();
         let email = $("#Email").val();
         let password1 = $("#Password1").val();
@@ -14,7 +42,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/api/user",
+            url: "/api/user/me",
             data: {
                 'email': email,
                 'password': password1,
@@ -22,14 +50,13 @@
                 'confirmPassword' : password2,
             },
             success: function (response) {
-                   alert("회원가입 완료")
-                    window.location.href = "/board"
-                },
-                error: function (error) {
-            customAlert(error.responseJSON.errorMessage);
-          },
-        });
-      }
+                if(response['result'] == "success"){
+            alert("회원가입 완료.")
+            window.location.href ="/board"
+          }
+        }
+      })};
+    
 
 </script>
 <title>회원가입</title>
@@ -38,12 +65,12 @@
     <div class="input">
         nickname <input type="text" id="nickname" size="20" placeholder="닉네임"><br>
         <p></p>
-        E_mail <input type="" id="email" id="email"  size="20   placeholder="email@email.com"><br>
+        E_mail <input type="text" id="Email" size="20" placeholder="email@email.com"><br>
         <p></p>
-        password <input type="password" id="password1" size="20" placeholder="영문과 숫자로 6자리 이상"><br>
-        password 확인 <input type="password" id="confirmPassword2" size="20" placeholder="비밀번호 재입력"><br></br>
+        password <input type="password" id="Password1" size="20" placeholder="영문과 숫자로 6자리 이상"><br>
+        password 확인 <input type="password" id="Password2" size="20" placeholder="비밀번호 재입력"><br></br>
     </div>
-    <button onclick="sign_up()">회원가입</button> <button hrf="/index">취소</button>
+    <button onclick="sign_up()">회원가입</button> <a button href="/">취소</button></a>
 </body>
 
 </html>

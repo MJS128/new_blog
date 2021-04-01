@@ -1,11 +1,12 @@
 const express = require("express");
 const { Mongoose } = require("mongoose");
 const Board = require("../schemas/board");
+const User = require("../schemas/user")
 //const board = require("../schemas/board");
 
 const router = express.Router();
 
-//api/board를 요청할때 
+//게시글 저장
 router.post("/board", async function (req, res, next) {
   try {
     const {title, content, author, pw} = req.body;
@@ -22,6 +23,52 @@ router.post("/board", async function (req, res, next) {
     next(err);
   }
 });
+
+
+//email       
+//password
+//nickname
+//confirmPassword
+
+// 회원가입 DB
+router.post("/user/me", async function (req, res, next)  {
+  try{
+  const { email, password, nickname, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    res.send({result:"fail"})
+  } 
+  else  {
+    await User.create({ email, password, nickname })}
+  
+  res.send({result:"success"});
+} catch (err) {
+  console.error(err);
+  next();
+  }
+});
+
+//login
+const jwt = require("jsonwebtoken");
+
+router.put("/user/me", async (req, res) => {
+  const { email, password } = req.body;
+ 
+  const user = await User.findOne({ email });
+
+  if (!user || password !== user.password) {
+    res.status(400).send({
+      errorMessage: "이메일 또는 패스워드가 틀렸습니다.",
+    });
+    return;
+  }
+
+  res.send({
+    token: jwt.sign({ userId: user.userId }, "my-secret-key"),
+  });
+});
+
+
 
 //전체게시글 조회
 router.get("/board", async function (req, res, next) {

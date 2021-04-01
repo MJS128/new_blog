@@ -40,6 +40,7 @@
     });
 
     function show_detail() {
+            isLogin === true? $('#toggleLogin').
               $.ajax({
               type: "GET",
               url: `/api/board/${boardId}`,      //req .파라미터로 id확인가능.. 흑.. 주입되는건 많은데 수용력이 부족하다
@@ -71,7 +72,7 @@
               success: function(response) {
                 if (response["result"] == "success") {
                   alert('확인완료')
-                  window.location.href =`/board/edit?boardId=${boardId}`
+                  window.location.href =`/board/edit?boardId=${boardId}&isLogin=`
                 } else {
                   alert('틀렸어용ㅠㅠ')
                 }
@@ -109,8 +110,29 @@
   <div id ="board_show">
     비밀번호 <input type='text' id='pw' placeholder="비밀번호를 입력해주세용" style="width:200px;">
   </div>
-    <article class="form-control" id="bookReview" cols="30"></article>
+    <article class="form-control" id="" cols="30"></article>
+
+    <div class="cmt_write_box clear">
+      <div class="fl">
+                <div class="user_info_input">
+          <label for="user_nick" class="blind">닉네임</label>
+          <input type="text" id="name_17801" name = "name" placeholder="닉네임" onfocus="this.style.background='#FFFFFF'" maxlength="20" >	
+        </div>
+        <div class="user_info_input">
+          <label for="user_pw" class="blind">비밀번호</label>
+          <input type="password" id="password_17801" name = "password" placeholder="비밀번호" onfocus="this.style.background='#FFFFFF'" maxlength = "20">
+        </div>
+              </div>
+      <div class="cmt_txt_cont">
+        <div class="cmt_write">
+          <label for="cmt_textarea" class="cmt_textarea_label" onclick="" >
+          .<br>
+          </label>
+          <textarea id="memo_17801" maxlength="400"></textarea>
+        </div>
     
+
+
     <button onclick="REPOST()">수정</button>
     <button onclick="DELETE()">삭제</button>
     </body>
